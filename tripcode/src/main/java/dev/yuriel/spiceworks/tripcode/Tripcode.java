@@ -29,18 +29,24 @@ public class Tripcode
 {
     private static final String saltTable = ".............................................../0123456789ABCDEFGABCDEFGHIJKLMNOPQRSTUVWXYZabcdefabcdefghijklmnopqrstuvwxyz.....................................................................................................................................";
     private static final String suffix = "H.";
-    private static final String charTable = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@$%&*()[]{}\\-=_+;:/?,.<>|";
+    private static final String charTable = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@$%*()[]{}\\-=_+;:/?,.|";
     private PrintStream ps;
     private final Gson gson = new Gson();
     private static final short cores = 6;
 
-    public static void main(String[] args)
+    public static void main2(String[] args)
     {
         //String code = "a";
         //System.out.printf("Password: %s | Tripcode: %s", code, Tripcode.tripcode(code)).println();
 
         Tripcode tc = new Tripcode();
         tc.scanTripcodes();
+    }
+
+    public static void main(String[] args) throws IOException
+    {
+        Python py = new Python();
+        System.out.println(py.sendCommand("print(f'2 to the power of 2 is {2 ** 2}')"));
     }
 
     public static String tripcode(String password)
