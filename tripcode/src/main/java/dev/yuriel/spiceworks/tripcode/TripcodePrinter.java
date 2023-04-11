@@ -3,6 +3,7 @@ package dev.yuriel.spiceworks.tripcode;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TripcodePrinter implements Runnable
 {
@@ -60,6 +61,7 @@ public class TripcodePrinter implements Runnable
             throw new IllegalArgumentException("Cannot scan for a pattern when no pattern has been provided");
         
         List<String> passwords = new ArrayList<String>();
+        Pattern regex = Pattern.compile(Pattern.quote(this.pattern), Pattern.CASE_INSENSITIVE);
         do
         {
             passwords.clear();
@@ -67,7 +69,8 @@ public class TripcodePrinter implements Runnable
 
             for (String password : passwords) {
                 String code = Tripcode.tripcode(password);
-                if (code.compareToIgnoreCase(this.pattern) == 0) {
+                boolean found = regex.matcher(code).find();
+                if (found) {
                     ps.printf("%s -> %s%n", password, Tripcode.tripcode(password));
                     ps.flush();
                 }
