@@ -1,4 +1,4 @@
-package dev.yuriel.spiceworks.tripcode;
+package dev.yuriel.spiceworks.tripcode.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class Python
     private BufferedReader stdout;
     private PrintStream stdin;
     private static final String charTable = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !@$%*()[]{}\\-=_+;:/?,.|";
-    private final Gson gson = new Gson();
+    private Gson gson;
 
     public Python() throws IOException
     {
@@ -33,8 +33,10 @@ public class Python
         this.stdin = new PrintStream(pythonInterpreter.getOutputStream());
         if (!this.sanityCheck())
             System.err.println("Interpreter FAIL");
-        else
+        else {
             this.setupProducts();
+            this.gson = new Gson();
+        }
     }
 
     private boolean sanityCheck() {

@@ -1,9 +1,11 @@
-package dev.yuriel.spiceworks.tripcode;
+package dev.yuriel.spiceworks.tripcode.utils;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import dev.yuriel.spiceworks.tripcode.Tripcode;
 
 public class TripcodePrinter implements Runnable
 {
