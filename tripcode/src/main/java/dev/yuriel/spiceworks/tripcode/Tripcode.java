@@ -3,7 +3,6 @@ package dev.yuriel.spiceworks.tripcode;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,10 +15,7 @@ import org.apache.commons.codec.digest.Crypt;
 import dev.yuriel.spiceworks.tripcode.utils.TripcodePrinter;
 import dev.yuriel.spiceworks.tripcode.utils.Python;
 
-/**
- * Hello world!
- *
- */
+
 public class Tripcode 
 {
     private static final String saltTable = ".............................................../0123456789ABCDEFGABCDEFGHIJKLMNOPQRSTUVWXYZabcdefabcdefghijklmnopqrstuvwxyz.....................................................................................................................................";
@@ -41,22 +37,9 @@ public class Tripcode
 
     public static void main(String[] args)
     {
-        //String code = "a";
-        //System.out.printf("Password: %s | Tripcode: %s", code, Tripcode.tripcode(code)).println();
-
         Tripcode tc = new Tripcode();
         String pattern = (args.length > 0)? args[0] : null;
         tc.scanTripcodes(pattern);
-    }
-
-    public static void main2(String[] args) throws IOException
-    {
-        Python py = new Python();
-        py.generatePasswords(1);
-        List<String> first = py.getNextPasswords(10);
-        for (String password : first)
-            System.out.printf("'%s' ", password);
-        System.out.println();
     }
 
     public static String tripcode(String password)
