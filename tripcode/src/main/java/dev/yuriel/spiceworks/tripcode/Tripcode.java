@@ -13,6 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.digest.Crypt;
 
+import dev.yuriel.spiceworks.tripcode.utils.TripcodePrinter;
+import dev.yuriel.spiceworks.tripcode.utils.Python;
+
 /**
  * Hello world!
  *
@@ -42,7 +45,8 @@ public class Tripcode
         //System.out.printf("Password: %s | Tripcode: %s", code, Tripcode.tripcode(code)).println();
 
         Tripcode tc = new Tripcode();
-        tc.scanTripcodes("junas");
+        String pattern = (args.length > 0)? args[0] : null;
+        tc.scanTripcodes(pattern);
     }
 
     public static void main2(String[] args) throws IOException
@@ -91,7 +95,12 @@ public class Tripcode
         {
             ExecutorService ex = Executors.newFixedThreadPool(Tripcode.cores);
             this.py.generatePasswords(i);
-            System.out.println(String.format("> Generating tripcodes with %d-character passwords. Using %d thread(s).", i, Tripcode.cores));
+            String msg;
+            if (hasPattern)
+                msg = String.format("> Scanning for pattern '%s' (case insensitive) using %d-character passwords. ", pattern, i);
+            else
+                msg = String.format("> Generating tripcodes with %d-character passwords. ", i);
+            System.out.println(msg.concat(String.format("Using %d thread(s).", Tripcode.cores)));
 
             for (int j = 0; j < Tripcode.cores; ++j) {
                 Runnable worker = new TripcodePrinter(this.ps, pattern, hasPattern, this.py);
