@@ -7,6 +7,16 @@ import java.util.regex.Pattern;
 
 import dev.yuriel.spiceworks.tripcode.Tripcode;
 
+
+/**
+ * Workhorse of the generator program.<p>
+ * 
+ * This Runnable, when given a properly configured {@link dev.yuriel.spiceworks.tripcode.utils.Python Python} object,
+ * will generate all tripcodes it manages to fetch from it.<p>
+ * 
+ * When given a pattern, will print only tripcodes matching that pattern.
+ * Otherwise, it prints all tripcodes generated indiscriminately.
+ */
 public class TripcodePrinter implements Runnable
 {
     private final PrintStream ps;
@@ -32,6 +42,9 @@ public class TripcodePrinter implements Runnable
             this.printAll();
     }
 
+    /**
+     * Prints all tripcodes generated to its given {@link java.io.PrintStream PrintStream} instance.
+     */
     private void printAll()
     {
         List<String> passwords = new ArrayList<String>();
@@ -57,6 +70,13 @@ public class TripcodePrinter implements Runnable
         while (!passwords.isEmpty());
     }
 
+    /**
+     * Prints all tripcodes generated to its given {@link java.io.PrintStream PrintStream} instance,
+     * as long as they match its given pattern.
+     * 
+     * @throws IllegalArgumentException When the given pattern is null or empty. Use {@link #printAll printAll()} instead.
+     * @see {@link #printAll printAll()} - The indiscriminate version of this method.
+     */
     private void printPattern() throws IllegalArgumentException
     {
         if (this.pattern == null || this.pattern.isEmpty())

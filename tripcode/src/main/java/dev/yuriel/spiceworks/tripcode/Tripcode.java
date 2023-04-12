@@ -15,7 +15,10 @@ import org.apache.commons.codec.digest.Crypt;
 import dev.yuriel.spiceworks.tripcode.utils.TripcodePrinter;
 import dev.yuriel.spiceworks.tripcode.utils.Python;
 
-
+/**
+ * Main Tripcode generator class.
+ * Depends on a Python 3 installation!
+ */
 public class Tripcode 
 {
     private static final String saltTable = ".............................................../0123456789ABCDEFGABCDEFGHIJKLMNOPQRSTUVWXYZabcdefabcdefghijklmnopqrstuvwxyz.....................................................................................................................................";
@@ -42,9 +45,17 @@ public class Tripcode
         tc.scanTripcodes(pattern);
     }
 
+    /**
+     * Hashes a given password into a 10-character tripcode.
+     * Passwords may not be longer than 8 characters, and will be truncated if needed.
+     * 
+     * @param password The password to generate a tripcode from.
+     * @return The tripcode generated from the given password, or null if the password
+     * is null or an empty string.
+     */
     public static String tripcode(String password)
     {
-        if (password == null)
+        if (password == null || password.isEmpty())
             return null;
         if (password.length() > 8)
             password = password.substring(0, 8);
@@ -57,8 +68,28 @@ public class Tripcode
         return Crypt.crypt(password, salt).substring(3);
     }
 
+    /**
+     * Generates tripcodes.<p>
+     * 
+     * A new file named "codes.txt" will be created in the current working directory,
+     * where ALL tripcodes generated will be written to.
+     */
     public void scanTripcodes() { this.scanTripcodes(null); }
 
+    /**
+     * Scans for tripcodes.<p>
+     * 
+     * If a pattern is given, any tripcodes containing said pattern (case insensitive)
+     * will be outputted to the standard output.<p>
+     * 
+     * Otherwise, a new file named "codes.txt" will be created in the current working
+     * directory, where ALL tripcodes generated will be written to.<p>
+     * 
+     * <b>Note:</b> This method makes use of threads to speed up execution time.
+     * The amount of threads used is equal to the {@code cores} attribute.
+     * 
+     * @param pattern The pattern to scan for
+     */
     public void scanTripcodes(String pattern)
     {
         boolean hasPattern = (pattern != null && !pattern.isEmpty());
@@ -99,6 +130,15 @@ public class Tripcode
         }
     }
 
+    /**
+     * <i><b>Deprecated:</b> Due to the thread pool being recreated every iteration, awaiting shutdown yields the same results
+     * without the need to use a CompletionService.</i><p>
+     * 
+     * Awaits the execution of a certain amount of runnables in the given CompletionService instance.
+     * 
+     * @param ex The CompletionService to await Runnables from;
+     * @param threadAmount The amount of Runnables to await.
+     */
     @Deprecated
     @SuppressWarnings("unused")
     private static void waitForAllRunnables(CompletionService<Void> ex, int threadAmount)
